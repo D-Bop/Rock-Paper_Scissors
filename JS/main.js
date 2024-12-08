@@ -2,6 +2,9 @@ const rock = document.querySelector(".rock");
 const paper = document.querySelector(".paper");
 const scissors = document.querySelector(".scissors");
 const resetScore = document.querySelector(".reset-score");
+const scoresParagraph = document.querySelector(".js-scores");
+const moves = document.querySelector(".moves");
+const jsResult = document.querySelector(".result");
 //  getting our item we saved in local storage andalso giving the score a defualt value using logical operators 
 let score = JSON.parse(localStorage.getItem("score")) || {
     wins: 0,
@@ -36,7 +39,7 @@ function pickPcMove() {
     }
 
     return computerMove;
-}
+};
 
 // Creating a fucntion for the comparisons of rock, paper and scissors to make the code more efficient
 
@@ -91,28 +94,34 @@ function playGame(playerMove) {
     } else if (result === "Tie.") {
         score.ties += 1;
     }
-
+    
     //  saving in local storage
     localStorage.setItem("score", JSON.stringify(score));
-    
+
+    updateScoreElemnt()    
     //  Displaying the stats
-    alert(`You picked ${playerMove}, Computer picked ${computerMove}, ${result}
-Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`);
-}  
+    jsResult.innerHTML = result
+    // UPDATING THE MOVES
+    moves.innerHTML = `You <img src="Assets/Images/${playerMove}-emoji.png" alt=""> 
+            <img src="Assets/Images/${computerMove}-emoji.png" alt=""> Computer`
+};  
+
+// Creating a function for updating the score element
+function updateScoreElemnt() {
+    scoresParagraph.innerHTML = `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+}
 
 rock.addEventListener("click", function() {
     playGame("rock")
-})
-
+});
 
 paper.addEventListener("click", function() {
    playGame("paper")
-})
-
+});
 
 scissors.addEventListener("click", function() {
     playGame("scissors")
-})
+});
 
 resetScore.addEventListener("click", function() {
     alert("You have reset the score")
@@ -120,4 +129,7 @@ resetScore.addEventListener("click", function() {
     score.losses = 0;
     score.ties = 0;
     localStorage.removeItem("score");
-})
+    updateScoreElemnt( )
+});
+
+updateScoreElemnt(); 
