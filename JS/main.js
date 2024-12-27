@@ -5,6 +5,7 @@ const resetScore = document.querySelector(".reset-score");
 const scoresParagraph = document.querySelector(".js-scores");
 const moves = document.querySelector(".moves");
 const jsResult = document.querySelector(".result");
+const autoBtn = document.querySelector(".auto-play-button")
 //  getting our item we saved in local storage andalso giving the score a defualt value using logical operators 
 let score = JSON.parse(localStorage.getItem("score")) || {
     wins: 0,
@@ -41,6 +42,28 @@ function pickPcMove() {
     return computerMove;
 };
 
+
+let isAutoPlaying = false;
+let intervalId; 
+
+autoBtn.addEventListener("click", function() {
+    if(!isAutoPlaying) {
+        intervalId = setInterval(function() {
+            const playerMove = pickPcMove();
+            playGame(playerMove);
+        }, 1000);
+        isAutoPlaying = true;
+    } else {
+        clearInterval(  intervalId);
+        isAutoPlaying = false;
+    }
+
+    if(isAutoPlaying === true) {
+        autoBtn.textContent = "Stop playing"
+    } else if(isAutoPlaying === false) {
+        autoBtn.textContent = "Auto Play"
+    }
+})
 // Creating a fucntion for the comparisons of rock, paper and scissors to make the code more efficient
 
 function playGame(playerMove) {
@@ -133,3 +156,4 @@ resetScore.addEventListener("click", function() {
 });
 
 updateScoreElemnt(); 
+
